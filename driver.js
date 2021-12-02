@@ -1,8 +1,13 @@
-(async() => { 
-    while(!window.hasOwnProperty("Swal")) // define the condition as you like
-        await new Promise(resolve => setTimeout(resolve, 1000));
-    alert("Variable is defined");
-})();
+function init(){
+    if(typeof Swal !== "undefined"){
+        alert("Exists")
+    }
+    else{
+        setTimeout(init, 250);
+    }
+}
+init()
+
 
 // function httpGet(url) {
 //     var xmlHttp = new XMLHttpRequest();
