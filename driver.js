@@ -1,5 +1,5 @@
 function init(){
-    if(typeof Swal !== "undefined"){
+    if(typeof Swal !== "undefined" || true){
         alert("Exists")
     }
     else{
