@@ -7,7 +7,7 @@ function init(){
         var entries = performance.getEntriesByType('resource');
         entries.map(function(entry) {
           if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/driver.js')){
+            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/driver_2.js')){
                 _target = entry.name;
                 return;
             }
@@ -25,7 +25,7 @@ function init(){
             localStorage.DSLN_DID_POP = true
             localStorage.DSLN_DC = discount 
             localStorage.DSLN_REG_POP = true
-            Swal.fire({title:`Create an account for a discount!`, html:summary, confirmButtonText:"Create Account"}).then(x => {
+            Swal.fire({title:header, html:summary, confirmButtonText:"Create Account"}).then(x => {
                 if(x.isConfirmed)
                     window.location.replace('/account/register');
             })
