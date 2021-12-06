@@ -30,6 +30,12 @@ function init(){
             })
 
         } 
+        
+        if(document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP){
+            localStorage.DSLN_REG_POP = false
+            Swal.fire({title:`You unlocked ${summary}`, html:`Code: ${discount}`, confirmButtonText:"Thank You"})
+        }
+        
     }
     else{
         setTimeout(init, 250);
