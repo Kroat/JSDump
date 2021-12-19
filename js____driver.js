@@ -144,7 +144,7 @@ function init(){
             Swal.fire({
                 title:`<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[headerSize]} ${fontMap[headerHTML]}">${header}</p>`,
                 html: showSummary ?  `<p style="color:${textColor};${sizeMap[discountSize]} ${fontMap[headerHTML]}">${summary}</p>` : null,
-                confirmButtonText: `<p style="${buttonSizeMap[headerSize]} ${fontMap[headerHTML]}">${buttonText}</p>`,
+                confirmButtonText: `<p style="color: ${backgroundColor}; ${buttonSizeMap[headerSize]} ${fontMap[headerHTML]}">${buttonText}</p>`,
                 background: backgroundColor,
                 buttonsStyling: false,
                 customClass: {
