@@ -98,7 +98,7 @@ function init(){
         var entries = performance.getEntriesByType('resource');
         entries.map(function(entry) {
           if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js____driver.js')){
+            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js__driver.js')){
                 _target = entry.name;
                 return;
             }
