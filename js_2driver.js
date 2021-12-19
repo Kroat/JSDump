@@ -95,7 +95,7 @@ function init(){
         var entries = performance.getEntriesByType('resource');
         entries.map(function(entry) {
           if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js2driver.js')){
+            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js_2driver.js')){
                 _target = entry.name;
                 return;
             }
@@ -135,8 +135,7 @@ function init(){
             return
         }
         if(!__st.cid && !localStorage.DSLN_DID_POP){ 
-            localStorage.DSLN_DID_POP = true 
-            localStorage.DSLN_REG_POP = true
+             
             Swal.fire({
                 title:`<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[headerSize]} ${fontMap[headerHTML]}">${header}</p>`,
                 html: showSummary ?  `<p style="color:${textColor};${sizeMap[discountSize]} ${fontMap[headerHTML]}">${summary}</p>` : null,
@@ -154,16 +153,16 @@ function init(){
                   }
                  
         }).then(x => {
+                localStorage.DSLN_DID_POP = true 
+                localStorage.DSLN_REG_POP = true            
+                ref.set({views: increment}, {merge: true}).then(() => {
+                    console.log("Document successfully written!"); 
+                })
+                .catch((error) => {
+                    console.error("Error writing document: ", error); 
+                });            
                 if(x.isConfirmed)
-                    localStorage.DSLN_REG_POP = true
-                    ref.set({views: increment}, {merge: true}).then(() => {
-                        console.log("Document successfully written!");
-                        window.location.replace('/account/register');
-                    })
-                    .catch((error) => {
-                        console.error("Error writing document: ", error);
-                        window.location.replace('/account/register');
-                    });
+                    window.location.replace('/account/register');
             })
         } 
         
