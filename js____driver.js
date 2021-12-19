@@ -81,7 +81,7 @@ function init(){
         });
       var db = firebase.firestore();
       var now = new Date();
-var fullDaysSinceEpoch = Math.floor(now/8.64e7);
+      var fullDaysSinceEpoch = Math.floor(now/8.64e7);
 
       const increment = firebase.firestore.FieldValue.increment(1)
     if(typeof Swal !== "undefined" && typeof db !== "undefined"){
@@ -98,7 +98,7 @@ var fullDaysSinceEpoch = Math.floor(now/8.64e7);
         var entries = performance.getEntriesByType('resource');
         entries.map(function(entry) {
           if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js___driver.js')){
+            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js____driver.js')){
                 _target = entry.name;
                 return;
             }
@@ -118,10 +118,20 @@ var fullDaysSinceEpoch = Math.floor(now/8.64e7);
         let successHTML = urlParams.get("sh")
         let animation = urlParams.get("a")
         let discountSize = urlParams.get("cs")
-        console.log('discount size ', discountSize)
-        console.log(animation)
 
-        console.log(enabled)
+        var style = getComputedStyle(document.body) 
+        let buttonColor = style.getPropertyValue('--color-btn-primary')
+        if(buttonColor == ''){
+            buttonColor: "black";
+        }
+        let textColor = style.getPropertyValue('--color-body-text')
+        if(textColor == ''){
+            textColor = "black";
+        }
+        let backgroundColor = style.getPropertyValue('--color-bg')
+        if (backgroundColor){
+            backgroundColor: 'white';
+        }
 
         if(!enabled){
             console.log("Script is not enabled")
@@ -132,9 +142,14 @@ var fullDaysSinceEpoch = Math.floor(now/8.64e7);
             localStorage.DSLN_DC = discount 
             localStorage.DSLN_REG_POP = true
             Swal.fire({
-                title:`<p style="color:black;overflow: initial; line-height: 100%;${sizeMap[headerSize]} ${fontMap[headerHTML]}">${header}</p>`,
-                html: showSummary ?  `<p style="color:black;${sizeMap[discountSize]} ${fontMap[headerHTML]}">${summary}</p>` : null,
-                confirmButtonText: `<p style="color: white; ${buttonSizeMap[headerSize]} ${fontMap[headerHTML]}">${buttonText}</p>`,
+                title:`<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[headerSize]} ${fontMap[headerHTML]}">${header}</p>`,
+                html: showSummary ?  `<p style="color:${textColor};${sizeMap[discountSize]} ${fontMap[headerHTML]}">${summary}</p>` : null,
+                confirmButtonText: `<p style="${buttonSizeMap[headerSize]} ${fontMap[headerHTML]}">${buttonText}</p>`,
+                background: backgroundColor,
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn' //insert class here
+                },
                 showClass: {
                     popup: `${AnimateDICT[animation][0]}`
                 },
