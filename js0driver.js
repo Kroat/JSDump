@@ -86,7 +86,6 @@ function init(){
       const increment = firebase.firestore.FieldValue.increment(1)
     if(typeof Swal !== "undefined" && typeof db !== "undefined"){
         const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
-        ref.set({views: increment}, {merge: true})
 
         var styleSheet = document.createElement("style")
         styleSheet.type = "text/css"
@@ -98,7 +97,7 @@ function init(){
         var entries = performance.getEntriesByType('resource');
         entries.map(function(entry) {
           if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js00driver.js')){
+            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js0driver.js')){
                 _target = entry.name;
                 return;
             }
@@ -159,9 +158,15 @@ function init(){
                  
         }).then(x => {
                 if(x.isConfirmed)
-                    window.location.replace('/account/register');
+                    ref.set({views: increment}, {merge: true}).then(() => {
+                        console.log("Document successfully written!");
+                        window.location.replace('/account/register');
+                    })
+                    .catch((error) => {
+                        console.error("Error writing document: ", error);
+                        window.location.replace('/account/register');
+                    });
             })
-
         } 
         
         if(document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP){
@@ -170,6 +175,11 @@ function init(){
                 title:`<p style="overflow: initial; line-height: 100%;${sizeMap[successSize]} ${fontMap[successHTML]}">${successText}</p>`,
                 html: `<p>${discount}</p>`,
                 confirmButtonText:"Thank You",
+                background: backgroundColor,
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn' //insert class here
+                },
                 showClass: {
                     popup: `${AnimateDICT[animation][0]}`
                 },
@@ -179,6 +189,13 @@ function init(){
                  
         }).then(x => {
             localStorage.DSLN_REG_POP = false
+            ref.set({signups: increment}, {merge: true}).then(() => {
+                console.log("Document successfully written!"); 
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                window.location.replace('/account/register');
+            });
         })
         }
         
