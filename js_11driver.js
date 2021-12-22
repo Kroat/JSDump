@@ -95,7 +95,7 @@ function init(){
 				console.log(pageURL.get('de') == 'true')
 				Swal.fire({
                 title:`<p style="overflow: initial; line-height: 100%;${sizeMap[pageURL.get('hf')]} ${fontMap[pageURL.get('hh')]}">${decodeURIComponent(pageURL.get('h'))}</p>`,
-                html: `<p>${pageURL.get('de') == 'true' ? decodeURIComponent(pageURL.get('d')) : null}</p>`,
+                html: `<p>${pageURL.get('de') == 'true' ? pageURL.get('d') : null}</p>`,
                 confirmButtonText: decodeURIComponent(pageURL.get('bt')),
                 background: backgroundColor,
                 buttonsStyling: false,
@@ -129,7 +129,7 @@ function init(){
         var entries = performance.getEntriesByType('resource');
         entries.map(function(entry) {
           if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js_10driver.js')){
+            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js_3driver.js')){
                 _target = entry.name;
                 return;
             }
