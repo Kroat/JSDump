@@ -72,7 +72,7 @@ const buttonSizeMap = {
   'l': "font-size: 25px;",
   'xl': "font-size: 30px;",
   'xxl': "font-size: 35px;",
-  }    
+  }
 
 const fontMap = {
 '1': "",
@@ -93,224 +93,317 @@ const AnimateDICT = {
     'su': ['animate__animated animate__backInUp', 'animate__animated animate__backOutDown'],
     'sd': ['animate__animated animate__backInDown', 'animate__animated animate__backOutUp']
 } 
+function init() {
 
 
-function init(){ 
+    if (typeof Swal !== "undefined" && typeof WebFont !== "undefined") {
 
-	  
- 
-      if(typeof Swal !== "undefined" && typeof WebFont !== "undefined"){
         WebFont.load({
-			google: {
-				families: [
-				'Cabin:400', 
-				'Courier Prime:400',
-				'Crimson Pro:400',
-				'Lato:400',
-				'Montserrat:400',  
-				'Nanum Gothic:400',  
-				'Open Sans:400',  
-				'Oswald:400',  
-				'Playfair Display:400',  
-				]
-			}
-		});
-			 	
-		const queryString = window.location.search;
-		const pageURL = new URLSearchParams(queryString);
-		
-		
-		var style = getComputedStyle(document.body) 
-        let buttonColor = style.getPropertyValue('--color-btn-primary')
-        if(buttonColor == ''){
-            buttonColor: "black";
-        }
-        let textColor = style.getPropertyValue('--color-body-text')
-        if(textColor == ''){
-            textColor = "black";
-        }
-        let backgroundColor = style.getPropertyValue('--color-bg')
-        if (backgroundColor){
-            backgroundColor: 'white';
-        }
-		let buttonCSS = null
-		let possibleButtonCSS = ['btn', 'Button', 'button']
-		for(let cssIndex in possibleButtonCSS){
-			if(document.getElementsByClassName(possibleButtonCSS[cssIndex]).length > 0){
-				buttonCSS = possibleButtonCSS[cssIndex]
-			}
-		}
-		
-		console.log("Chosen button ", buttonCSS)
-		var styleSheet = document.createElement("style")
-        styleSheet.type = "text/css"
-        styleSheet.innerText = animate_css
-        styleSheet.innerText += fontURLs
-        document.head.appendChild(styleSheet)
-		
-		// Preview
-		if(pageURL.get("SFDP") == 'true'){
-			const isInitial = pageURL.get('p') == 'initial';
-			if(isInitial){
-				console.log(`${AnimateDICT[pageURL.get('a')][0]}`)
-				console.log(pageURL.get('de'))
-				console.log(pageURL.get('de') == 'true')
-				Swal.fire({
-                title:`<p style="overflow: initial; line-height: 100%;${sizeMap[pageURL.get('hh')]} ${fontMap[pageURL.get('hf')]}">${decodeURIComponent(pageURL.get('h'))}</p>`,
-                html: `<p>${pageURL.get('de') == 'true' ? pageURL.get('d') : ''}</p>`,
-                confirmButtonText: decodeURIComponent(pageURL.get('bt')),
-                background: backgroundColor, 
-                buttonsStyling: buttonCSS ? false : true,
-                customClass: {
-                    confirmButton: buttonCSS //insert class here
-                },
-                showClass: {
-                    popup: `${AnimateDICT[pageURL.get('a')][0]}`
-                },
-                hideClass: {
-                    popup: `${AnimateDICT[pageURL.get('a')][1]}`
-                }
-                 
-				})
-			}else{
-				Swal.fire({
-                title:`<p style="overflow: initial; line-height: 100%;${sizeMap[pageURL.get('ss')]} ${fontMap[pageURL.get('hf')]}">${pageURL.get('s')}</p>`,
-                html: `<p>${pageURL.get('c')}</p>`,
-                confirmButtonText:"Thank You",
-                background: backgroundColor,
-                buttonsStyling: false,
-                customClass: {
-                    confirmButton: 'btn' //insert class here
-                },
-                showClass: {
-                    popup: `${AnimateDICT[pageURL.get('a')][0]}`
-                },
-                hideClass: {
-                    popup: `${AnimateDICT[pageURL.get('a')][1]}`
-                }
-                 
-				})
-			}
-			return
-		}
-		
-        let _target = null
-
-        var entries = performance.getEntriesByType('resource');
-        entries.map(function(entry) {
-          if (entry.initiatorType === 'script') {
-            if(entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js_!4driver.js')){
-                _target = entry.name;
-                return;
+            google: {
+                families: [
+                    'Cabin:400',
+                    'Courier Prime:400',
+                    'Crimson Pro:400',
+                    'Lato:400',
+                    'Montserrat:400',
+                    'Nanum Gothic:400',
+                    'Open Sans:400',
+                    'Oswald:400',
+                    'Playfair Display:400',
+                ]
             }
-          }
-        });    
-        let urlParams = new URLSearchParams(_target);
-        let enabled = urlParams.get("e") == "true"
-        let discount = urlParams.get("c")
-        let summary = urlParams.get("s") 
-        let headerSize = urlParams.get("hs")
-        let header = urlParams.get("h")
-        let headerHTML = urlParams.get("hh")
-        let showSummary = urlParams.get("d") == "true"
-        let buttonText = urlParams.get("b") 
-        let successSize = urlParams.get("ss")
-        let successText = urlParams.get("st")
-        let successHTML = urlParams.get("sh")
-        let animation = urlParams.get("a")
-        let discountSize = urlParams.get("cs")
+        });
 
-        if(!enabled){
-            console.log("Script is not enabled")
-            return
-        }
-        if(!__st.cid && !localStorage.DSLN_DID_POP){ 
-             
-            Swal.fire({
-                title:`<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[headerSize]} ${fontMap[headerHTML]}">${header}</p>`,
-                html: showSummary ?  `<p style="color:${textColor};${sizeMap[discountSize]} ${fontMap[headerHTML]}">${summary}</p>` : null,
-                confirmButtonText: `<p style="color: ${backgroundColor}; ${buttonSizeMap[headerSize]} ${fontMap[headerHTML]}">${buttonText}</p>`,
-                background: backgroundColor,
-                buttonsStyling: false,
-                customClass: {
-                    confirmButton: 'btn' //insert class here
-                },
-                showClass: {
-                    popup: `${AnimateDICT[animation][0]}`
-                },
-                  hideClass: {
-                    popup: `${AnimateDICT[animation][1]}`
-                  }
-                 
-        }).then(x => {
-                localStorage.DSLN_DID_POP = true 
-                localStorage.DSLN_REG_POP = true      
-				console.log(x)
-				console.log(x.isConfirmed)
-				
-				  firebase.initializeApp({
-				  apiKey: 'AIzaSyCzmAHjw8DL_wWZ0aXiDD2nyRjTldm_McQ',
-				  authDomain: "signupfordiscountshopifyapp.firebaseapp.com",
-				  projectId: 'signupfordiscountshopifyapp'
-				  });
-				  var db = firebase.firestore();
-				  var now = new Date();
-				  var fullDaysSinceEpoch = Math.floor(now/8.64e7);
-					const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
-				  const increment = firebase.firestore.FieldValue.increment(1)
-				
-				
-				if(x.isConfirmed){
-					ref.set({views: increment, clicks: increment}, {merge: true}).then(() => {
-						console.log("Document successfully written!");
-						window.location.replace('/account/register');
-					})
-					.catch((error) => {
-						console.error("Error writing document: ", error); 
-						window.location.replace('/account/register');
-					});     					
-				}
-				else{
-					ref.set({views: increment}, {merge: true}).then(() => {
-						console.log("Document successfully written!"); 
-					})
-					.catch((error) => {
-						console.error("Error writing document: ", error); 
-					});  
-					
-				}            
-                
-            })
-        } 
-        
-        if(document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP){
-            //localStorage.DSLN_REG_POP = false
-            Swal.fire({
-                title:`<p style="overflow: initial; line-height: 100%;${sizeMap[successSize]} ${fontMap[successHTML]}">${successText}</p>`,
-                html: `<p>${discount}</p>`,
-                confirmButtonText:"Thank You",
-                background: backgroundColor, 
-                buttonsStyling: buttonCSS ? false : true,
-                showClass: {
-                    popup: `${AnimateDICT[animation][0]}`
-                },
-                  hideClass: {
-                    popup: `${AnimateDICT[animation][1]}`
-                  }
-                 
-        }).then(x => {
-            localStorage.DSLN_REG_POP = false
-            ref.set({signups: increment}, {merge: true}).then(() => {
-                console.log("Document successfully written!"); 
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error); 
-            });
+        const queryString = window.location.search;
+        const pageURL = new URLSearchParams(queryString);
+
+
+        firebase.initializeApp({
+            apiKey: 'AIzaSyCzmAHjw8DL_wWZ0aXiDD2nyRjTldm_McQ',
+            authDomain: "signupfordiscountshopifyapp.firebaseapp.com",
+            projectId: 'signupfordiscountshopifyapp'
+        });
+
+        var db = firebase.firestore();
+        const ref = db.collection(window.location.host).doc('init')
+
+        ref.get().then(x => {
+
+            const fireData = x.data()
+
+            let buttonColor = null;
+            let textColor = null;
+            let backgroundColor = null;
+            let subheaderTextClass = null;
+
+            var style = getComputedStyle(document.body)
+
+            textColor = style.getPropertyValue('--color-body-text')
+            if (textColor == '') {
+                textColor = "black";
+            }
+
+            backgroundColor = style.getPropertyValue('--color-bg')
+            if (backgroundColor == '') {
+                backgroundColor: 'white';
+            }
+
+            buttonColor = style.getPropertyValue('--color-btn-primary')
+            if (buttonColor == '') {
+                buttonColor: "black";
+            }
+
+            fireData.customHeaderClass
+            fireData.customSubheaderClass
+            fireData.customBackgroundClass
+            fireData.customButtonClass
+
+            let buttonCSS = null
+            let possibleButtonCSS = ['btn', 'Button', 'button']
+            for (let cssIndex in possibleButtonCSS) {
+                if (document.getElementsByClassName(possibleButtonCSS[cssIndex]).length > 0) {
+                    buttonCSS = possibleButtonCSS[cssIndex]
+                }
+            }
+
+            console.log("Chosen button ", buttonCSS)
+
+            var styleSheet = document.createElement("style")
+            styleSheet.type = "text/css"
+            styleSheet.innerText = animate_css
+            document.head.appendChild(styleSheet)
+
+            // Preview
+            if (pageURL.get("SFDP") == 'true') {
+                const isInitial = pageURL.get('p') == 'initial';
+                if (isInitial) { 
+                  let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
+                  Swal.fire({
+                      //title: fireData.customHeaderClass == '' ? `<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</p>` : fireData.customHeaderClass,
+                      //html: fireData.enableDiscount ? `<p style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</p>` : null,
+                      //title:null,
+  
+  
+                      html: fireData.customPopupHTML.
+                      replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</div>`).
+                      replaceAll('{{discount_summary}}', `${fireData.enableDiscount ? discountHTML : ''}`)
+                      ,
+                      confirmButtonText: `<p style="color: ${backgroundColor}; ${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.buttonText}</p>`,
+                      //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
+                      buttonsStyling: false,
+                      customClass: {
+                          confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
+                      },
+                      showClass: {
+                        popup: `${AnimateDICT[fireData.animation][0]}`
+                      },
+                      hideClass: {
+                        popup: `${AnimateDICT[fireData.animation][1]}`
+                      },
+                      willOpen: () => {
+                        document.getElementById('swal2-title').remove()
+                      }
+  
+                  })
+                } else {
+                  Swal.fire({
+                      title: null,
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+                      html: fireData.customPopupHTMLSuccess.
+                      replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
+                      replaceAll('{{discount_code}}', `${fireData.coupon}`)
+                      ,
+                      confirmButtonText: `Thank You`,
+                      //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
+                      buttonsStyling: false,
+                      customClass: {
+                          confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
+                      },
+                      showClass: {
+                        popup: `${AnimateDICT[fireData.animation][0]}`
+                      },
+                      hideClass: {
+                        popup: `${AnimateDICT[fireData.animation][1]}`
+                      },
+                      willOpen: () => {
+                        document.getElementById('swal2-title').remove()
+                      }
+  
+  
+  
+  
+  
+                  })
+                }
+                return
+            }
+
+            // let _target = null
+            //
+            // var entries = performance.getEntriesByType('resource');
+            // entries.map(function(entry) {
+            //     if (entry.initiatorType === 'script') {
+            //         if (entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js_3driver.js')) {
+            //             _target = entry.name;
+            //             return;
+            //         }
+            //     }
+            // });
+            // let urlParams = new URLSearchParams(_target);
+            // let enabled = urlParams.get("e") == "true"
+            // let discount = urlParams.get("c")
+            // let summary = urlParams.get("s")
+            // let headerSize = urlParams.get("hs")
+            // let header = urlParams.get("h")
+            // let headerHTML = urlParams.get("hh")
+            // let showSummary = urlParams.get("d") == "true"
+            // let buttonText = urlParams.get("b")
+            // let successSize = urlParams.get("ss")
+            // let successText = urlParams.get("st")
+            // let successHTML = urlParams.get("sh")
+            // let animation = urlParams.get("a")
+            // let discountSize = urlParams.get("cs")
+
+            if (!fireData.enabled) {
+                console.log("Script is not enabled")
+                return
+            }
+
+            if (!__st.cid && !localStorage.DSLN_DID_POP) { 
+                let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
+                Swal.fire({
+                    //title: fireData.customHeaderClass == '' ? `<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</p>` : fireData.customHeaderClass,
+                    //html: fireData.enableDiscount ? `<p style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</p>` : null,
+                    //title:null,
+
+
+                    html: fireData.customPopupHTML.
+                    replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</div>`).
+                    replaceAll('{{discount_summary}}', `${fireData.enableDiscount ? discountHTML : ''}`)
+                    ,
+                    confirmButtonText: `<p style="color: ${backgroundColor}; ${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.buttonText}</p>`,
+                    //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
+                    },
+                    showClass: {
+                      popup: `${AnimateDICT[fireData.animation][0]}`
+                    },
+                    hideClass: {
+                      popup: `${AnimateDICT[fireData.animation][1]}`
+                    },
+                    willOpen: () => {
+                      document.getElementById('swal2-title').remove()
+                    }
+
+                }).then(x => {
+                    localStorage.DSLN_DID_POP = true
+                    localStorage.DSLN_REG_POP = true
+                    console.log(x)
+                    console.log(x.isConfirmed)
+
+
+                    var now = new Date();
+                    var fullDaysSinceEpoch = Math.floor(now / 8.64e7);
+                    const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
+                    const increment = firebase.firestore.FieldValue.increment(1)
+
+
+                    if (x.isConfirmed) {
+                        ref.set({
+                                views: increment,
+                                clicks: increment
+                            }, {
+                                merge: true
+                            }).then(() => {
+                                console.log("Document successfully written!");
+                                window.location.replace('/account/register');
+                            })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                                window.location.replace('/account/register');
+                            });
+                    } else {
+                        ref.set({
+                                views: increment
+                            }, {
+                                merge: true
+                            }).then(() => {
+                                console.log("Document successfully written!");
+                            })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                            });
+
+                    }
+
+                })
+            }
+
+            if (document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP || true) {
+                //localStorage.DSLN_REG_POP = false
+                Swal.fire({
+                    title: null,
+
+
+
+
+
+
+
+
+
+
+                    html: fireData.customPopupHTMLSuccess.
+                    replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
+                    replaceAll('{{discount_code}}', `${fireData.coupon}`)
+                    ,
+                    confirmButtonText: `Thank You`,
+                    //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
+                    },
+                    showClass: {
+                      popup: `${AnimateDICT[fireData.animation][0]}`
+                    },
+                    hideClass: {
+                      popup: `${AnimateDICT[fireData.animation][1]}`
+                    },
+                    willOpen: () => {
+                      document.getElementById('swal2-title').remove()
+                    }
+
+
+
+
+
+                }).then(x => {
+                    localStorage.DSLN_REG_POP = false
+                    ref.set({
+                            signups: increment
+                        }, {
+                            merge: true
+                        }).then(() => {
+                            console.log("Document successfully written!");
+                        })
+                        .catch((error) => {
+                            console.error("Error writing document: ", error);
+                        });
+                })
+            }
         })
-        }
-        
-    }
-    else{
+    } else {
         setTimeout(init, 250);
     }
 }
