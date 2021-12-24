@@ -92,7 +92,7 @@ const AnimateDICT = {
     'z': ['animate__animated animate__zoomIn', 'animate__animated animate__zoomOut'],
     'su': ['animate__animated animate__backInUp', 'animate__animated animate__backOutDown'],
     'sd': ['animate__animated animate__backInDown', 'animate__animated animate__backOutUp']
-} 
+}
 function init() {
 
 
@@ -176,19 +176,19 @@ function init() {
             // Preview
             if (pageURL.get("SFDP") == 'true') {
                 const isInitial = pageURL.get('p') == 'initial';
-                if (isInitial) { 
+                if (isInitial) {
                   let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
                   Swal.fire({
                       //title: fireData.customHeaderClass == '' ? `<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</p>` : fireData.customHeaderClass,
                       //html: fireData.enableDiscount ? `<p style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</p>` : null,
                       //title:null,
-  
-  
+
+
                       html: fireData.customPopupHTML.
                       replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</div>`).
                       replaceAll('{{discount_summary}}', `${fireData.enableDiscount ? discountHTML : ''}`)
                       ,
-                      confirmButtonText: `<p style="color: ${backgroundColor}; ${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.buttonText}</p>`,
+                      confirmButtonText: `${fireData.buttonText}`,
                       //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
                       buttonsStyling: false,
                       customClass: {
@@ -203,21 +203,21 @@ function init() {
                       willOpen: () => {
                         document.getElementById('swal2-title').remove()
                       }
-  
+
                   })
                 } else {
                   Swal.fire({
                       title: null,
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
                       html: fireData.customPopupHTMLSuccess.
                       replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
                       replaceAll('{{discount_code}}', `${fireData.coupon}`)
@@ -237,11 +237,11 @@ function init() {
                       willOpen: () => {
                         document.getElementById('swal2-title').remove()
                       }
-  
-  
-  
-  
-  
+
+
+
+
+
                   })
                 }
                 return
@@ -278,7 +278,10 @@ function init() {
                 return
             }
 
-            if (!__st.cid && !localStorage.DSLN_DID_POP) { 
+            const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
+            const increment = firebase.firestore.FieldValue.increment(1)
+
+            if (!__st.cid && !localStorage.DSLN_DID_POP) {
                 let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
                 Swal.fire({
                     //title: fireData.customHeaderClass == '' ? `<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</p>` : fireData.customHeaderClass,
@@ -290,7 +293,7 @@ function init() {
                     replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</div>`).
                     replaceAll('{{discount_summary}}', `${fireData.enableDiscount ? discountHTML : ''}`)
                     ,
-                    confirmButtonText: `<p style="color: ${backgroundColor}; ${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.buttonText}</p>`,
+                    confirmButtonText: `${fireData.buttonText}`,
                     //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
                     buttonsStyling: false,
                     customClass: {
@@ -315,8 +318,7 @@ function init() {
 
                     var now = new Date();
                     var fullDaysSinceEpoch = Math.floor(now / 8.64e7);
-                    const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
-                    const increment = firebase.firestore.FieldValue.increment(1)
+ 
 
 
                     if (x.isConfirmed) {
@@ -350,7 +352,7 @@ function init() {
                 })
             }
 
-            if (document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP || true) {
+            if (document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP) {
                 //localStorage.DSLN_REG_POP = false
                 Swal.fire({
                     title: null,
