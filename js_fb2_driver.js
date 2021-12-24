@@ -278,6 +278,8 @@ function init() {
                 return
             }
 
+            const now = new Date();
+            const fullDaysSinceEpoch = Math.floor(now / 8.64e7);
             const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
             const increment = firebase.firestore.FieldValue.increment(1)
 
@@ -316,9 +318,7 @@ function init() {
                     console.log(x.isConfirmed)
 
 
-                    var now = new Date();
-                    var fullDaysSinceEpoch = Math.floor(now / 8.64e7);
- 
+
 
 
                     if (x.isConfirmed) {
