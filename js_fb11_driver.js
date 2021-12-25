@@ -175,16 +175,14 @@ function init() {
                     buttonCSS = possibleButtonCSS[cssIndex]
                 }
             }
- 
+
             var styleSheet = document.createElement("style")
             styleSheet.type = "text/css"
             styleSheet.innerText = animate_css
             document.head.appendChild(styleSheet)
+  
 
-            if(parseInt(fireData.popupDelay) > 0){
-              sleep(parseInt(fireData.popupDelay) * 1000)
-            }
-
+            //setTimeout(function(){
             // Preview
             if (pageURL.get("SFDP") == 'true') {
                 const isInitial = pageURL.get('p') == 'initial';
@@ -310,6 +308,20 @@ function init() {
 
             if (document.referrer.includes(fireData.accountSignupPath) && __st.cid && localStorage.DSLN_REG_POP) {
                 localStorage.DSLN_REG_POP = false
+                ref.set({
+                        'cids': firebase.firestore.FieldValue.arrayUnion(__st.cid)
+                    }, {
+                        merge: true
+                    }).then(() => {
+                        if(fireData.validPopupURL != ''){
+                          window.location.replace(fireData.validPopupURL);
+                        }
+                    })
+                    .catch((error) => {
+                        if(fireData.validPopupURL != ''){
+                          window.location.replace(fireData.validPopupURL);
+                        }
+                });                
                 Swal.fire({
                     title: null,
                     html: fireData.customPopupHTMLSuccess.
@@ -335,20 +347,6 @@ function init() {
                     }
                 }).then(x => {
                     localStorage.DSLN_REG_POP = false
-                    ref.set({
-                            'cids': firebase.firestore.FieldValue.arrayUnion(__st.cid)
-                        }, {
-                            merge: true
-                        }).then(() => {
-                            if(fireData.validPopupURL != ''){
-                              window.location.replace(fireData.validPopupURL);
-                            }
-                        })
-                        .catch((error) => {
-                            if(fireData.validPopupURL != ''){
-                              window.location.replace(fireData.validPopupURL);
-                            }
-                        });
                 })
             }
         })
