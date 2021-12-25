@@ -93,6 +93,16 @@ const AnimateDICT = {
     'su': ['animate__animated animate__backInUp', 'animate__animated animate__backOutDown'],
     'sd': ['animate__animated animate__backInDown', 'animate__animated animate__backOutUp']
 }
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
 function init() {
 
 
@@ -153,10 +163,10 @@ function init() {
                 buttonColor: "black";
             }
 
-            fireData.customHeaderClass
-            fireData.customSubheaderClass
-            fireData.customBackgroundClass
-            fireData.customButtonClass
+            // fireData.customHeaderClass
+            // fireData.customSubheaderClass
+            // fireData.customBackgroundClass
+            // fireData.customButtonClass
 
             let buttonCSS = null
             let possibleButtonCSS = ['btn', 'Button', 'button']
@@ -165,13 +175,15 @@ function init() {
                     buttonCSS = possibleButtonCSS[cssIndex]
                 }
             }
-
-            console.log("Chosen button ", buttonCSS)
-
+ 
             var styleSheet = document.createElement("style")
             styleSheet.type = "text/css"
             styleSheet.innerText = animate_css
             document.head.appendChild(styleSheet)
+
+            if(parseInt(fireData.popupDelay) > 0){
+              sleep(parseInt(fireData.popupDelay) * 1000)
+            }
 
             // Preview
             if (pageURL.get("SFDP") == 'true') {
@@ -179,18 +191,14 @@ function init() {
                 if (isInitial) {
                   let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
                   Swal.fire({
-                      //title: fireData.customHeaderClass == '' ? `<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</p>` : fireData.customHeaderClass,
-                      //html: fireData.enableDiscount ? `<p style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</p>` : null,
-                      //title:null,
-
-
                       html: fireData.customPopupHTML.
                       replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</div>`).
                       replaceAll('{{discount_summary}}', `${fireData.enableDiscount ? discountHTML : ''}`)
                       ,
                       confirmButtonText: `${fireData.buttonText}`,
-                      //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
-                      buttonsStyling: false,
+                      background: fireData.OVERRIDE_BACKGROUND_COLOR == '' ? null : fireData.OVERRIDE_BACKGROUND_COLOR,
+                      confirmButtonColor: fireData.OVERRIDE_BUTTON_HEX == '' ? null : fireData.OVERRIDE_BUTTON_HEX,
+                      buttonsStyling: fireData.OVERRIDE_SWAL,
                       customClass: {
                           confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
                       },
@@ -208,23 +216,14 @@ function init() {
                 } else {
                   Swal.fire({
                       title: null,
-
-
-
-
-
-
-
-
-
-
                       html: fireData.customPopupHTMLSuccess.
                       replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
                       replaceAll('{{discount_code}}', `${fireData.coupon}`)
                       ,
-                      confirmButtonText: `Thank You`,
-                      //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
-                      buttonsStyling: false,
+                      confirmButtonText: fireData.thankYouButtonText,
+                      background: fireData.OVERRIDE_BACKGROUND_COLOR == '' ? null : fireData.OVERRIDE_BACKGROUND_COLOR,
+                      confirmButtonColor: fireData.OVERRIDE_BUTTON_HEX == '' ? null : fireData.OVERRIDE_BUTTON_HEX,
+                      buttonsStyling: fireData.OVERRIDE_SWAL,
                       customClass: {
                           confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
                       },
@@ -238,40 +237,10 @@ function init() {
                         document.getElementById('swal2-title').remove()
                       }
 
-
-
-
-
                   })
                 }
                 return
             }
-
-            // let _target = null
-            //
-            // var entries = performance.getEntriesByType('resource');
-            // entries.map(function(entry) {
-            //     if (entry.initiatorType === 'script') {
-            //         if (entry.name.includes('https://cdn.statically.io/gh/Kroat/JSDump/main/js_3driver.js')) {
-            //             _target = entry.name;
-            //             return;
-            //         }
-            //     }
-            // });
-            // let urlParams = new URLSearchParams(_target);
-            // let enabled = urlParams.get("e") == "true"
-            // let discount = urlParams.get("c")
-            // let summary = urlParams.get("s")
-            // let headerSize = urlParams.get("hs")
-            // let header = urlParams.get("h")
-            // let headerHTML = urlParams.get("hh")
-            // let showSummary = urlParams.get("d") == "true"
-            // let buttonText = urlParams.get("b")
-            // let successSize = urlParams.get("ss")
-            // let successText = urlParams.get("st")
-            // let successHTML = urlParams.get("sh")
-            // let animation = urlParams.get("a")
-            // let discountSize = urlParams.get("cs")
 
             if (!fireData.enabled) {
                 console.log("Script is not enabled")
@@ -286,18 +255,14 @@ function init() {
             if (!__st.cid && !localStorage.DSLN_DID_POP) {
                 let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
                 Swal.fire({
-                    //title: fireData.customHeaderClass == '' ? `<p style="color:${textColor};overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</p>` : fireData.customHeaderClass,
-                    //html: fireData.enableDiscount ? `<p style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</p>` : null,
-                    //title:null,
-
-
                     html: fireData.customPopupHTML.
                     replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.headerTextSize]} ${fontMap[fireData.headerFont]}">${fireData.headerText}</div>`).
                     replaceAll('{{discount_summary}}', `${fireData.enableDiscount ? discountHTML : ''}`)
                     ,
                     confirmButtonText: `${fireData.buttonText}`,
-                    //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
-                    buttonsStyling: false,
+                    background: fireData.OVERRIDE_BACKGROUND_COLOR == '' ? null : fireData.OVERRIDE_BACKGROUND_COLOR,
+                    confirmButtonColor: fireData.OVERRIDE_BUTTON_HEX == '' ? null : fireData.OVERRIDE_BUTTON_HEX,
+                    buttonsStyling: fireData.OVERRIDE_SWAL,
                     customClass: {
                         confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
                     },
@@ -314,13 +279,6 @@ function init() {
                 }).then(x => {
                     localStorage.DSLN_DID_POP = true
                     localStorage.DSLN_REG_POP = true
-                    console.log(x)
-                    console.log(x.isConfirmed)
-
-
-
-
-
                     if (x.isConfirmed) {
                         ref.set({
                                 views: increment,
@@ -328,12 +286,10 @@ function init() {
                             }, {
                                 merge: true
                             }).then(() => {
-                                console.log("Document successfully written!");
-                                window.location.replace('/account/register');
+                                window.location.replace(fireData.accountSignupPath);
                             })
                             .catch((error) => {
-                                console.error("Error writing document: ", error);
-                                window.location.replace('/account/register');
+                                window.location.replace(fireData.accountSignupPath);
                             });
                     } else {
                         ref.set({
@@ -352,27 +308,19 @@ function init() {
                 })
             }
 
-            if (document.referrer.includes("/account/register") && __st.cid && localStorage.DSLN_REG_POP) {
-                //localStorage.DSLN_REG_POP = false
+            if (document.referrer.includes(fireData.accountSignupPath) && __st.cid && localStorage.DSLN_REG_POP) {
+                localStorage.DSLN_REG_POP = false
                 Swal.fire({
                     title: null,
-
-
-
-
-
-
-
-
-
-
                     html: fireData.customPopupHTMLSuccess.
                     replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
                     replaceAll('{{discount_code}}', `${fireData.coupon}`)
                     ,
-                    confirmButtonText: `Thank You`,
-                    //background: fireData.customBackgroundClass == '' ? backgroundColor : fireData.customBackgroundClass,
-                    buttonsStyling: false,
+
+                    background: fireData.OVERRIDE_BACKGROUND_COLOR == '' ? null : fireData.OVERRIDE_BACKGROUND_COLOR,
+                    confirmButtonText: fireData.thankYouButtonText,
+                    confirmButtonColor: fireData.OVERRIDE_BUTTON_HEX == '' ? null : fireData.OVERRIDE_BUTTON_HEX,
+                    buttonsStyling: fireData.OVERRIDE_SWAL,
                     customClass: {
                         confirmButton: fireData.customButtonClass == '' ? buttonCSS : fireData.customButtonClass,
                     },
@@ -385,22 +333,21 @@ function init() {
                     willOpen: () => {
                       document.getElementById('swal2-title').remove()
                     }
-
-
-
-
-
                 }).then(x => {
                     localStorage.DSLN_REG_POP = false
                     ref.set({
-                            signups: increment
+                            'cids': firebase.firestore.FieldValue.arrayUnion(__st.cid)
                         }, {
                             merge: true
                         }).then(() => {
-                            console.log("Document successfully written!");
+                            if(fireData.validPopupURL != ''){
+                              window.location.replace(fireData.validPopupURL);
+                            }
                         })
                         .catch((error) => {
-                            console.error("Error writing document: ", error);
+                            if(fireData.validPopupURL != ''){
+                              window.location.replace(fireData.validPopupURL);
+                            }
                         });
                 })
             }
