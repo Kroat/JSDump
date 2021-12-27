@@ -103,6 +103,20 @@ function sleep(milliseconds) {
   }
 }
 
+function copyToClipboard(text, node) {
+    var dummy = document.createElement("textarea");
+    // to avoid breaking orgain page when copying more words
+    // cant copy when adding below this code
+    // dummy.style.display = 'none'
+    document.body.appendChild(dummy);
+    //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+    dummy.value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    node.innerText = 'Copied'
+}
+
 function init() {
 
 
@@ -180,7 +194,7 @@ function init() {
             styleSheet.type = "text/css"
             styleSheet.innerText = animate_css
             document.head.appendChild(styleSheet)
-  
+
 
             //setTimeout(function(){
             // Preview
@@ -216,7 +230,7 @@ function init() {
                       title: null,
                       html: fireData.customPopupHTMLSuccess.
                       replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
-                      replaceAll('{{discount_code}}', `${fireData.coupon}`)
+                      replaceAll('{{discount_code}}', `<div onclick='copyToClipboard("${fireData.coupon}", this)'>${fireData.coupon}</div>`)
                       ,
                       confirmButtonText: fireData.thankYouButtonText,
                       background: fireData.OVERRIDE_BACKGROUND_COLOR == '' ? null : fireData.OVERRIDE_BACKGROUND_COLOR,
@@ -250,7 +264,7 @@ function init() {
             const ref = db.collection(window.location.host).doc(String(fullDaysSinceEpoch))
             const increment = firebase.firestore.FieldValue.increment(1)
 
-            if (!__st.cid && !localStorage.DSLN_DID_POP) {
+            if (!__st.cid && !localStorage.DSLN_DID_POP && window.location.href.includes(fireData.validPopupURL)) {
                 let discountHTML = `<div style="color:${textColor};${sizeMap[fireData.discountSize]} ${fontMap[fireData.headerFont]}">${fireData.summary}</div>`;
                 Swal.fire({
                     html: fireData.customPopupHTML.
@@ -306,27 +320,18 @@ function init() {
                 })
             }
 
-            if (document.referrer.includes(fireData.accountSignupPath) && __st.cid && localStorage.DSLN_REG_POP) {
+            if (document.referrer.includes(fireData.accountSignupPath) && __st.cid && localStorage.DSLN_REG_POP != false) {
                 localStorage.DSLN_REG_POP = false
                 ref.set({
                         'cids': firebase.firestore.FieldValue.arrayUnion(__st.cid)
                     }, {
                         merge: true
-                    }).then(() => {
-                        if(fireData.validPopupURL != ''){
-                          window.location.replace(fireData.validPopupURL);
-                        }
                     })
-                    .catch((error) => {
-                        if(fireData.validPopupURL != ''){
-                          window.location.replace(fireData.validPopupURL);
-                        }
-                });                
                 Swal.fire({
                     title: null,
                     html: fireData.customPopupHTMLSuccess.
                     replaceAll('{{title_text}}', `<div style="color:${textColor}; overflow: initial; line-height: 100%;${sizeMap[fireData.successTextSize]} ${fontMap[fireData.successHTMLInput]}">${fireData.successText}</div>`).
-                    replaceAll('{{discount_code}}', `${fireData.coupon}`)
+                    replaceAll('{{discount_code}}', `<div onclick='copyToClipboard("${fireData.coupon}", this)'>${fireData.coupon}</div>`)
                     ,
 
                     background: fireData.OVERRIDE_BACKGROUND_COLOR == '' ? null : fireData.OVERRIDE_BACKGROUND_COLOR,
@@ -347,6 +352,9 @@ function init() {
                     }
                 }).then(x => {
                     localStorage.DSLN_REG_POP = false
+                    if(fireData.validPopupURL != ''){
+                      window.location.replace(fireData.successRedirect);
+                    }
                 })
             }
         })
