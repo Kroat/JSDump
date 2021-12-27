@@ -94,15 +94,6 @@ const AnimateDICT = {
     'sd': ['animate__animated animate__backInDown', 'animate__animated animate__backOutUp']
 }
 
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
-
 function copyToClipboard(text, node) {
     var dummy = document.createElement("textarea");
     // to avoid breaking orgain page when copying more words
@@ -155,6 +146,7 @@ function init() {
 
             const fireData = x.data()
 
+            setTimeout(() => {
             let buttonColor = null;
             let textColor = null;
             let backgroundColor = null;
@@ -189,7 +181,7 @@ function init() {
                     buttonCSS = possibleButtonCSS[cssIndex]
                 }
             }
-
+            console.log(fireData.customButtonClass)
             var styleSheet = document.createElement("style")
             styleSheet.type = "text/css"
             styleSheet.innerText = animate_css
@@ -357,9 +349,14 @@ function init() {
                     }
                 })
             }
+
+
+          }, parseInt(fireData.popupDelay) * 1000)
+
+
         })
     } else {
-        setTimeout(init, 250);
+        setTimeout(init, 150);
     }
 }
 init()
