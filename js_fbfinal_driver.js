@@ -95,12 +95,8 @@ const AnimateDICT = {
 }
 
 function copyToClipboard(text, node) {
-    var dummy = document.createElement("textarea");
-    // to avoid breaking orgain page when copying more words
-    // cant copy when adding below this code
-    // dummy.style.display = 'none'
+    var dummy = document.createElement("textarea"); 
     document.body.appendChild(dummy);
-    //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
     dummy.value = text;
     dummy.select();
     document.execCommand("copy");
@@ -301,10 +297,8 @@ function init() {
                             }, {
                                 merge: true
                             }).then(() => {
-                                console.log("Document successfully written!");
                             })
                             .catch((error) => {
-                                console.error("Error writing document: ", error);
                             });
 
                     }
@@ -344,7 +338,7 @@ function init() {
                     }
                 }).then(x => {
                     localStorage.DSLN_REG_POP = false
-                    if(fireData.validPopupURL != ''){
+                    if(fireData.successRedirect != ''){
                       window.location.replace(fireData.successRedirect);
                     }
                 })
