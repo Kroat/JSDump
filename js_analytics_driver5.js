@@ -196,8 +196,6 @@ function init() {
                 }
             }
 
-            analytics.logEvent('button_css', items: [{ css: buttonCSS }]);
-
             var styleSheet = document.createElement("style")
             styleSheet.type = "text/css"
             styleSheet.innerText = animate_css
